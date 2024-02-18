@@ -7,7 +7,7 @@ Welcome to [my web portfolio](https://manahil-04.github.io/)! Here, you'll find 
 I'm Manahil, a CS undergrad specializing in machine learning and data science. I am exploring the frontiers of AI and leveraging data-driven insights to solve real-world problems.
 
 ## Get in Touch
-I'm always eager to collaborate on new ML projects, discuss research ideas, or simply chat about the latest trends in AI. If you're interested in connecting, feel free to reach out via [my linkedin](www.linkedin.com/in/manahilmushtaq).
+I'm always eager to collaborate on new ML projects, discuss research ideas, or simply chat about the latest trends in AI. If you're interested in connecting, feel free to reach out via [my LinkedIn](https://www.linkedin.com/in/manahilmushtaq).
 
 The template I used to build my own portfolio can be found [here](https://themewagon.github.io/clark/).
 
