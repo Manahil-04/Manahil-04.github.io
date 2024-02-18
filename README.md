@@ -11,3 +11,5 @@ I'm always eager to collaborate on new ML projects, discuss research ideas, or s
 
 Thank you for visiting. Enjoy exploring!
 
+
+The template I used to build my own portfolio can be found [here](https://themewagon.github.io/clark/).
