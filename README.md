@@ -9,7 +9,6 @@ I'm Manahil, a CS undergrad specializing in machine learning and data science. I
 ## Get in Touch
 I'm always eager to collaborate on new ML projects, discuss research ideas, or simply chat about the latest trends in AI. If you're interested in connecting, feel free to reach out via www.linkedin.com/in/manahilmushtaq.
 
-Thank you for visiting. Enjoy exploring!
-
-
 The template I used to build my own portfolio can be found [here](https://themewagon.github.io/clark/).
+
+Thank you for visiting. Enjoy exploring!
