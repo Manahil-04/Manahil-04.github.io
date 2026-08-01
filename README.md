@@ -1,13 +1,26 @@
-# Manahil's Portfolio
+# Manahil Mushtaq — Portfolio
 
-Welcome to [my web portfolio](https://manahil-04.github.io/)! Here, you'll find a showcase of my projects, skills, and experiences.
+Personal portfolio, live at [manahil-04.github.io](https://manahil-04.github.io/). Built with React, TypeScript, Tailwind CSS, and Framer Motion — featuring a custom cursor, tactile neubrutalist UI, and layered glassmorphism panels.
 
-## About Me
+## Stack
 
-I'm Manahil, a CS undergrad specializing in machine learning and data science. I am exploring the frontiers of AI and leveraging data-driven insights to solve real-world problems.
+- [Vite](https://vitejs.dev/) + [React](https://react.dev/) + TypeScript
+- [Tailwind CSS](https://tailwindcss.com/) with a fully variable-driven theme (`src/index.css`)
+- [Framer Motion](https://www.framer.com/motion/) for scroll reveals, the custom cursor, and micro-interactions
+- [Web3Forms](https://web3forms.com/) for the contact form
 
-## Get in Touch
-I'm always eager to collaborate on new ML projects, discuss research ideas, or simply chat about the latest trends in AI. If you're interested in connecting, feel free to reach out via [my LinkedIn](https://www.linkedin.com/in/manahilmushtaq).
+## Development
 
+```bash
+npm install
+cp .env.example .env   # then fill in your Web3Forms access key
+npm run dev
+```
 
-Thank you for visiting. Enjoy exploring!
+## Theming
+
+Every color in the site is a CSS custom property defined in `src/index.css`. Edit the `:root` block to re-theme the entire site — no component changes needed.
+
+## Deployment
+
+Pushes to `main` deploy automatically to GitHub Pages via `.github/workflows/deploy.yml`. The `VITE_WEB3FORMS_KEY` secret must be set under the repo's Settings → Secrets → Actions. The same `dist/` build output also deploys unchanged to Vercel if needed.

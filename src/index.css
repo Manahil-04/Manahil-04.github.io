@@ -1,0 +1,57 @@
+@import '@fontsource/inter/400.css';
+@import '@fontsource/inter/500.css';
+@import '@fontsource/inter/600.css';
+@import '@fontsource/space-grotesk/500.css';
+@import '@fontsource/space-grotesk/600.css';
+@import '@fontsource/space-grotesk/700.css';
+@import '@fontsource/jetbrains-mono/400.css';
+@import '@fontsource/jetbrains-mono/500.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Swap any value below to re-theme the entire site. */
+  --color-bg: #f7f5ef;
+  --color-surface: #ffffff;
+  --color-text: #15140f;
+  --color-text-muted: #6b6a63;
+  --color-border: #15140f;
+  --color-accent: #ff4d00;
+  --color-accent-soft: rgba(255, 77, 0, 0.12);
+  --color-accent-secondary: #0b6e4f;
+  --color-accent-secondary-soft: rgba(11, 110, 79, 0.12);
+  --color-glass: rgba(255, 255, 255, 0.55);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-family: 'Inter', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+body.cursor-none {
+  cursor: none;
+}
+
+body.cursor-none a,
+body.cursor-none button,
+body.cursor-none [role='button'] {
+  cursor: none;
+}
+
+::selection {
+  background: var(--color-accent);
+  color: var(--color-surface);
+}
