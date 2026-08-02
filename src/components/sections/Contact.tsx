@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import type { FormEvent } from 'react';
+import { CheckCircle2, AlertCircle } from 'lucide-react';
 import { Reveal } from '../ui/Reveal';
 import { SectionHeading } from '../ui/SectionHeading';
 import { Button } from '../ui/Button';
@@ -13,10 +14,11 @@ export function Contact() {
   const [status, setStatus] = useState<Status>('idle');
   const [error, setError] = useState<string | null>(null);
 
-  const handleChange = (field: keyof typeof form) => (event: FormEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const value = event.currentTarget.value;
-    setForm((prev) => ({ ...prev, [field]: value }));
-  };
+  const handleChange =
+    (field: keyof typeof form) => (event: FormEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+      const value = event.currentTarget.value;
+      setForm((prev) => ({ ...prev, [field]: value }));
+    };
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -52,24 +54,29 @@ export function Contact() {
   };
 
   return (
-    <section
-      id="contact"
-      className="relative py-24 md:py-32 bg-[radial-gradient(circle_at_top,_var(--color-accent-soft),_transparent_60%)]"
-    >
-      <div className="mx-auto max-w-3xl px-6">
+    <section id="contact" className="py-16 md:py-24">
+      <div className="mx-auto max-w-2xl px-6">
         <Reveal>
+          <div className="flex justify-center">
+            <span className="inline-flex items-center gap-2 rounded-full border border-border bg-surface px-4 py-1.5 font-mono text-xs text-secondary">
+              <span className="h-1.5 w-1.5 rounded-full bg-secondary" />
+              Open to new opportunities &amp; collaboration
+            </span>
+          </div>
           <SectionHeading
+            index="08"
             eyebrow="Contact"
-            title="Contact Me"
+            title="Let's build something"
             description="Have a project, role, or idea in mind? I'd love to hear about it."
-            className="mx-auto text-center"
+            align="center"
+            className="mt-6"
           />
         </Reveal>
 
         <Reveal delay={0.05}>
           <form
             onSubmit={handleSubmit}
-            className="mt-12 rounded-2xl border-2 border-ink bg-surface p-8 shadow-brutal space-y-5"
+            className="mt-12 rounded-2xl border border-border bg-surface p-8 shadow-soft space-y-5"
           >
             <div>
               <label htmlFor="name" className="font-mono text-xs uppercase tracking-wide text-muted">
@@ -81,7 +88,7 @@ export function Contact() {
                 value={form.name}
                 onChange={handleChange('name')}
                 required
-                className="mt-1 w-full rounded-lg border-2 border-border bg-bg px-4 py-2.5 text-ink
+                className="mt-1.5 w-full rounded-lg border border-border bg-bg px-4 py-2.5 text-ink
                   focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent"
               />
             </div>
@@ -96,7 +103,7 @@ export function Contact() {
                 value={form.email}
                 onChange={handleChange('email')}
                 required
-                className="mt-1 w-full rounded-lg border-2 border-border bg-bg px-4 py-2.5 text-ink
+                className="mt-1.5 w-full rounded-lg border border-border bg-bg px-4 py-2.5 text-ink
                   focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent"
               />
             </div>
@@ -111,7 +118,7 @@ export function Contact() {
                 value={form.message}
                 onChange={handleChange('message')}
                 required
-                className="mt-1 w-full rounded-lg border-2 border-border bg-bg px-4 py-2.5 text-ink
+                className="mt-1.5 w-full rounded-lg border border-border bg-bg px-4 py-2.5 text-ink
                   focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent"
               />
             </div>
@@ -121,12 +128,14 @@ export function Contact() {
             </Button>
 
             {status === 'success' && (
-              <p className="text-center font-mono text-sm text-accent2">
-                Message sent — thanks for reaching out!
+              <p className="flex items-center justify-center gap-1.5 text-center text-sm text-secondary">
+                <CheckCircle2 size={16} /> Message sent — thanks for reaching out!
               </p>
             )}
             {status === 'error' && error && (
-              <p className="text-center font-mono text-sm text-accent">{error}</p>
+              <p className="flex items-center justify-center gap-1.5 text-center text-sm text-accent">
+                <AlertCircle size={16} /> {error}
+              </p>
             )}
           </form>
         </Reveal>

@@ -1,52 +1,74 @@
+import { motion } from 'framer-motion';
+import { ArrowUpRight } from 'lucide-react';
 import type { Project } from '../../data/projects';
-import { GlassPanel } from './GlassPanel';
+import { Card } from './Card';
+import { useTilt } from '../../hooks/useTilt';
 
 export function ProjectCard({ project }: { project: Project }) {
-  return (
-    <a
-      href={project.link}
-      className="group relative block pb-10"
-      data-cursor="project"
-      data-cursor-label="View project"
-    >
-      <div
-        className="overflow-hidden rounded-xl border-2 border-ink shadow-brutal transition-all duration-200 ease-out
-          group-hover:-translate-y-1 group-hover:rotate-[-1deg] group-hover:shadow-brutal-lg"
-      >
-        <img
-          src={project.image}
-          alt={project.title}
-          className="h-56 w-full object-cover"
-          loading="lazy"
-        />
-      </div>
+  const { ref, rotateX, rotateY, handleMouseMove, handleMouseLeave } = useTilt(6);
 
-      <GlassPanel className="absolute -bottom-2 left-4 right-4 p-4">
-        <span className="font-mono text-[11px] uppercase tracking-wide text-accent2">
-          {project.category}
-        </span>
-        <h3 className="mt-1 font-display text-base font-semibold text-ink leading-snug">
-          {project.title}
-        </h3>
-        <p className="mt-2 text-sm text-ink/80 leading-relaxed line-clamp-3">
-          {project.description}
-        </p>
-        <div className="mt-3 flex flex-wrap gap-1.5">
-          {project.tech.slice(0, 4).map((tech) => (
-            <span
-              key={tech}
-              className="rounded border border-border/60 bg-surface/70 px-2 py-0.5 font-mono text-[10px] text-muted"
-            >
-              {tech}
-            </span>
-          ))}
-          {project.tech.length > 4 && (
-            <span className="rounded border border-border/60 bg-surface/70 px-2 py-0.5 font-mono text-[10px] text-muted">
-              +{project.tech.length - 4}
-            </span>
-          )}
+  return (
+    <motion.div
+      ref={ref as never}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      whileHover={{ y: -6 }}
+      transition={{ type: 'spring', stiffness: 300, damping: 24 }}
+      style={{ rotateX, rotateY, transformPerspective: 1000 }}
+      className="h-full"
+    >
+      <Card
+        hoverable={false}
+        data-cursor="link"
+        className="group flex h-full flex-col overflow-hidden transition-shadow duration-300
+          hover:shadow-lifted hover:border-border-strong"
+      >
+        <div className="relative overflow-hidden">
+          <img
+            src={project.image}
+            alt={project.title}
+            loading="lazy"
+            className="h-52 w-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-ink/20 via-transparent to-transparent" />
         </div>
-      </GlassPanel>
-    </a>
+
+        <div className="flex flex-1 flex-col p-6">
+          <span className="font-mono text-[11px] uppercase tracking-wide text-secondary">
+            {project.category}
+          </span>
+          <h3 className="mt-2 font-display text-lg font-semibold text-ink leading-snug">
+            {project.title}
+          </h3>
+          <p className="mt-2 text-sm text-ink/80 leading-relaxed">{project.description}</p>
+
+          <div className="mt-4 flex flex-wrap gap-1.5">
+            {project.tech.slice(0, 4).map((tech) => (
+              <span
+                key={tech}
+                className="rounded border border-border bg-bg/60 px-2 py-0.5 font-mono text-[10px] text-muted"
+              >
+                {tech}
+              </span>
+            ))}
+            {project.tech.length > 4 && (
+              <span className="rounded border border-border bg-bg/60 px-2 py-0.5 font-mono text-[10px] text-muted">
+                +{project.tech.length - 4}
+              </span>
+            )}
+          </div>
+
+          <a
+            href={project.link}
+            data-cursor="link"
+            className="mt-auto inline-flex items-center gap-1.5 pt-5 text-sm font-medium text-accent
+              transition-transform duration-200 group-hover:translate-x-0.5"
+          >
+            View project
+            <ArrowUpRight size={15} />
+          </a>
+        </div>
+      </Card>
+    </motion.div>
   );
 }

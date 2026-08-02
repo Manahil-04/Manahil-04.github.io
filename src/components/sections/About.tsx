@@ -1,19 +1,22 @@
 import { Reveal } from '../ui/Reveal';
 import { SectionHeading } from '../ui/SectionHeading';
-import { GlassPanel } from '../ui/GlassPanel';
+import { Card } from '../ui/Card';
 import { Button } from '../ui/Button';
+import { Badge } from '../ui/Badge';
+
+const FOCUS_AREAS = ['AI Systems', 'Distributed Infrastructure', 'Full-Stack Engineering'];
 
 export function About() {
   return (
-    <section id="about" className="py-24 md:py-32">
+    <section id="about" className="py-16 md:py-24">
       <div className="mx-auto max-w-6xl px-6">
         <Reveal>
-          <SectionHeading eyebrow="About Me" title="Who I am" />
+          <SectionHeading index="01" eyebrow="About" title="Who I am" />
         </Reveal>
 
         <div className="mt-12 grid gap-8 md:grid-cols-[1.4fr_1fr]">
           <Reveal delay={0.05}>
-            <div className="rounded-2xl border-2 border-ink bg-surface p-8 shadow-brutal">
+            <Card hoverable={false} className="flex h-full flex-col p-8">
               <p className="text-ink/90 leading-relaxed">
                 I'm a software engineer and designer who enjoys building things that work as well
                 as they look. Lately, a lot of my focus has been on exploring agentic AI, not just
@@ -25,28 +28,49 @@ export function About() {
                 we're able to build. Whether it's starting fresh or refining details, I like
                 projects that let me mix creativity, engineering, and intelligent systems.
               </p>
-              <p className="mt-4 font-display text-lg font-semibold text-ink">
-                Let's connect and create something cool together.
-              </p>
-            </div>
+
+              <blockquote className="mt-6 border-l-2 border-accent pl-5">
+                <p className="font-display text-xl md:text-2xl text-ink italic leading-snug">
+                  Let's connect and create something cool together.
+                </p>
+              </blockquote>
+
+              <div className="mt-auto pt-6 flex flex-wrap gap-2">
+                {FOCUS_AREAS.map((area) => (
+                  <Badge key={area} label={area} />
+                ))}
+              </div>
+            </Card>
           </Reveal>
 
           <Reveal delay={0.1}>
-            <GlassPanel className="p-6 h-full flex flex-col justify-between">
-              <div className="space-y-4 font-mono text-sm">
+            <Card className="relative flex h-full flex-col justify-between overflow-hidden p-6">
+              <span className="absolute right-4 top-4 h-2 w-2 rounded-full border border-accent" aria-hidden />
+              <dl className="space-y-5 text-sm">
                 <div>
-                  <p className="text-muted text-xs uppercase tracking-wide">Name</p>
-                  <p className="text-ink">Manahil Mushtaq</p>
+                  <dt className="font-mono text-[11px] uppercase tracking-wide text-muted">Name</dt>
+                  <dd className="mt-1 font-display text-lg text-ink">Manahil Mushtaq</dd>
                 </div>
+                <div className="h-px bg-border" />
                 <div>
-                  <p className="text-muted text-xs uppercase tracking-wide">Email</p>
-                  <p className="text-ink break-all">manahilmushtaq004@gmail.com</p>
+                  <dt className="font-mono text-[11px] uppercase tracking-wide text-muted">Email</dt>
+                  <dd className="mt-1 text-ink break-all">manahilmushtaq004@gmail.com</dd>
                 </div>
-              </div>
-              <Button href="/resume.pdf" target="_blank" rel="noreferrer" className="mt-6 w-full justify-center">
+                <div className="h-px bg-border" />
+                <div>
+                  <dt className="font-mono text-[11px] uppercase tracking-wide text-muted">Currently</dt>
+                  <dd className="mt-1 text-ink">Software Development Engineer @ Sych Inc</dd>
+                </div>
+              </dl>
+              <Button
+                href="https://drive.google.com/file/d/1PQlD7B6iy5J0U-Fe6WuljNhoHPylPywv/view"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-8 w-full justify-center"
+              >
                 Download CV
               </Button>
-            </GlassPanel>
+            </Card>
           </Reveal>
         </div>
       </div>

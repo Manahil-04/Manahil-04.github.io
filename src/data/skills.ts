@@ -5,10 +5,10 @@ export interface SkillGroup {
 
 export const skillGroups: SkillGroup[] = [
   { category: 'Languages', skills: ['JavaScript (ES6+)', 'Python', 'C++'] },
-  { category: 'Frontend', skills: ['HTML5', 'CSS3', 'Bootstrap', 'React', 'Figma'] },
-  { category: 'Backend & Data', skills: ['Node.js', 'Express', 'MongoDB', 'MySQL', 'Firebase'] },
+  { category: 'Frontend', skills: ['React', 'HTML5', 'CSS3', 'Bootstrap', 'Figma'] },
+  { category: 'Backend', skills: ['Node.js', 'Express'] },
   {
-    category: 'ML / AI',
+    category: 'AI / ML',
     skills: [
       'Machine Learning',
       'Deep Learning',
@@ -25,5 +25,6 @@ export const skillGroups: SkillGroup[] = [
       'Jupyter',
     ],
   },
+  { category: 'Databases', skills: ['MongoDB', 'MySQL', 'Firebase'] },
   { category: 'Tools & Platforms', skills: ['Git', 'Linux'] },
 ];

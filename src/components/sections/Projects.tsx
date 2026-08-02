@@ -5,19 +5,20 @@ import { projects } from '../../data/projects';
 
 export function Projects() {
   return (
-    <section id="projects" className="py-24 md:py-32">
+    <section id="projects" className="py-16 md:py-24">
       <div className="mx-auto max-w-6xl px-6">
         <Reveal>
           <SectionHeading
-            eyebrow="My Projects"
+            index="03"
+            eyebrow="Projects"
             title="Things I've built"
-            description="A mix of full-stack apps, machine learning systems, and low-level engineering work."
+            description="Full-stack systems, machine learning pipelines, and low-level infrastructure work."
           />
         </Reveal>
 
-        <div className="mt-16 grid gap-x-8 gap-y-16 md:grid-cols-2">
+        <div className="mt-16 grid gap-8 md:grid-cols-2">
           {projects.map((project, index) => (
-            <Reveal key={project.slug} delay={index * 0.05}>
+            <Reveal key={project.slug} delay={index * 0.05} className="h-full">
               <ProjectCard project={project} />
             </Reveal>
           ))}

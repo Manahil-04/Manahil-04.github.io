@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+  <defs>
+    <linearGradient id="bevel" x1="4" y1="3" x2="20" y2="21" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="white" stop-opacity="0.45" />
+      <stop offset="42%" stop-color="white" stop-opacity="0" />
+      <stop offset="58%" stop-color="black" stop-opacity="0" />
+      <stop offset="100%" stop-color="black" stop-opacity="0.4" />
+    </linearGradient>
+  </defs>
+  <rect x="1" y="1" width="22" height="22" rx="6" fill="#9B3A2E" />
+  <g transform="translate(12 12) rotate(7)">
+    <path d="M 0 -9 L 2.7 -3.6 L 0 0 L -2.7 -3.6 Z" fill="#E8DFC8" />
+    <path d="M 0 -9 L 2.7 -3.6 L 0 0 L -2.7 -3.6 Z" fill="#E8DFC8" transform="rotate(90)" />
+    <path d="M 0 -9 L 2.7 -3.6 L 0 0 L -2.7 -3.6 Z" fill="#E8DFC8" transform="rotate(180)" />
+    <path d="M 0 -9 L 2.7 -3.6 L 0 0 L -2.7 -3.6 Z" fill="#E8DFC8" transform="rotate(270)" />
+    <g style="mix-blend-mode:overlay">
+      <path d="M 0 -9 L 2.7 -3.6 L 0 0 L -2.7 -3.6 Z" fill="url(#bevel)" />
+      <path d="M 0 -9 L 2.7 -3.6 L 0 0 L -2.7 -3.6 Z" fill="url(#bevel)" transform="rotate(90)" />
+      <path d="M 0 -9 L 2.7 -3.6 L 0 0 L -2.7 -3.6 Z" fill="url(#bevel)" transform="rotate(180)" />
+      <path d="M 0 -9 L 2.7 -3.6 L 0 0 L -2.7 -3.6 Z" fill="url(#bevel)" transform="rotate(270)" />
+    </g>
+    <circle cx="0" cy="0" r="1.6" fill="#3B4A5A" />
+  </g>
+</svg>

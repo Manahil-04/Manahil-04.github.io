@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 import type { TimelineEntry } from '../../data/experience';
-import { GlassPanel } from './GlassPanel';
+import { Card } from './Card';
 
 interface TimelineItemProps {
   entry: TimelineEntry;
@@ -9,14 +9,14 @@ interface TimelineItemProps {
 
 function TimelineCard({ entry }: { entry: TimelineEntry }) {
   return (
-    <GlassPanel className="p-5 shadow-brutal hover:-translate-y-1 transition-transform duration-150 ease-out">
-      <span className="font-mono text-xs uppercase tracking-wide text-accent2">{entry.period}</span>
-      <h3 className="mt-1 font-display text-lg font-semibold text-ink">{entry.role}</h3>
-      <p className="font-mono text-xs text-muted mt-0.5">
+    <Card className="p-6">
+      <span className="font-mono text-xs uppercase tracking-wide text-accent">{entry.period}</span>
+      <h3 className="mt-2 font-display text-lg font-semibold text-ink">{entry.role}</h3>
+      <p className="mt-0.5 text-sm text-muted">
         {entry.organization} · {entry.location}
       </p>
-      <p className="mt-3 text-sm text-ink/90 leading-relaxed">{entry.description}</p>
-    </GlassPanel>
+      <p className="mt-3 text-sm text-ink/85 leading-relaxed">{entry.description}</p>
+    </Card>
   );
 }
 
@@ -32,8 +32,9 @@ export function TimelineItem({ entry, align = 'left' }: TimelineItemProps) {
       </div>
       <span
         className={clsx(
-          'absolute w-3 h-3 rounded-full bg-accent border-2 border-ink',
-          'left-1 top-6 md:left-1/2 md:-translate-x-1/2',
+          'absolute h-2.5 w-2.5 rounded-full ring-4 ring-bg',
+          align === 'left' ? 'bg-accent' : 'bg-secondary',
+          'left-1 top-7 md:left-1/2 md:-translate-x-1/2',
         )}
       />
     </div>
