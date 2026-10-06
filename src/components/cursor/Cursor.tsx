@@ -40,8 +40,8 @@ export function Cursor() {
 
   useEffect(() => {
     if (prefersReducedMotion) return;
-    ringScale.set(pressed ? 0.65 : variant === 'link' ? 1.55 : variant === 'button' ? 1.4 : 1);
-    dotScale.set(pressed ? 1.7 : variant === 'default' ? 1 : 0.6);
+    ringScale.set(pressed ? 0.65 : 1);
+    dotScale.set(pressed ? 2 : variant === 'default' ? 1 : 1.5);
   }, [variant, pressed, ringScale, dotScale, prefersReducedMotion]);
 
   useEffect(() => {
@@ -83,7 +83,7 @@ export function Cursor() {
 
   return (
     <>
-      {/* Ring — trails a beat behind the point, grows on hover, contracts on press. */}
+      {/* Ring — trails a beat behind the point, contracts on press. */}
       <motion.div
         className="pointer-events-none fixed left-0 top-0 z-[9999]"
         style={{ x: ringX, y: ringY, translateX: '-50%', translateY: '-50%' }}
@@ -100,7 +100,9 @@ export function Cursor() {
         />
       </motion.div>
 
-      {/* Point — locked exactly to the pointer, the one spot of color. */}
+      {/* Point — locked exactly to the pointer, the one spot of color. Uses the
+          --color-primary token (dark slate in light mode, a soft blue in dark
+          mode) rather than the accent red, so it never fights the accent. */}
       <motion.div
         className="pointer-events-none fixed left-0 top-0 z-[9999]"
         style={{ x, y, translateX: '-50%', translateY: '-50%' }}
@@ -110,7 +112,7 @@ export function Cursor() {
           style={{
             width: DOT_SIZE,
             height: DOT_SIZE,
-            background: 'rgb(var(--color-accent))',
+            background: 'rgb(var(--color-primary))',
             scale: dotScale,
           }}
         />
