@@ -108,4 +108,12 @@ body.cursor-none [role='button'] {
   html {
     scroll-behavior: auto;
   }
+
+  .marquee-track {
+    animation-play-state: paused !important;
+  }
+}
+
+.marquee-row:hover .marquee-track {
+  animation-play-state: paused;
 }
