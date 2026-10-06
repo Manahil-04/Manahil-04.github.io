@@ -1,6 +1,7 @@
 import { Reveal } from '../ui/Reveal';
 import { SectionHeading } from '../ui/SectionHeading';
 import { Card } from '../ui/Card';
+import { HonorBadge } from '../ui/HonorBadge';
 import { education } from '../../data/education';
 
 export function Education() {
@@ -21,6 +22,13 @@ export function Education() {
                 <h3 className="mt-2 font-display text-xl font-semibold text-ink">{entry.degree}</h3>
                 <p className="mt-0.5 text-sm text-muted">{entry.institution}</p>
                 <p className="mt-4 max-w-3xl text-ink/85 leading-relaxed">{entry.description}</p>
+                {entry.honors && entry.honors.length > 0 && (
+                  <div className="mt-4 flex flex-wrap gap-2">
+                    {entry.honors.map((honor) => (
+                      <HonorBadge key={honor} label={honor} />
+                    ))}
+                  </div>
+                )}
               </Card>
             </Reveal>
           ))}
