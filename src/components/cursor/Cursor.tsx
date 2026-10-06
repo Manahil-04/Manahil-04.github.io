@@ -7,33 +7,18 @@ import { useReducedMotionSafe } from '../../hooks/useReducedMotionSafe';
 type Variant = 'default' | 'link' | 'button';
 
 // Critically damped — settles fast with no overshoot, per the "precision instrument,
-// not a bouncy toy" brief. This governs every state change (hover, press, release).
-const INSTRUMENT_SPRING = { type: 'spring' as const, stiffness: 520, damping: 42, mass: 0.4 };
+// not a bouncy toy" brief. Governs every size change (hover, press, release).
+const SCALE_SPRING = { type: 'spring' as const, stiffness: 520, damping: 42, mass: 0.4 };
 
-const STAR_ANGLES = [0, 90, 180, 270];
+// Slightly looser than the scale spring — just enough give for the ring to feel
+// like it's catching up to the point, without being slow enough to distract.
+const TRAIL_SPRING = { type: 'spring' as const, stiffness: 450, damping: 40, mass: 0.3 };
 
-interface StarPointProps {
-  angle: number;
-  length: number;
-  halfWidth: number;
-}
+// Near-instant: keeps the ring glued to the point when motion should be reduced.
+const SNAP_SPRING = { type: 'spring' as const, stiffness: 1000, damping: 80, mass: 0.4 };
 
-function starPath(length: number, halfWidth: number) {
-  const hipY = -length * 0.4;
-  return `M 0 ${-length} L ${halfWidth} ${hipY} L 0 0 L ${-halfWidth} ${hipY} Z`;
-}
-
-function StarPoint({ angle, length, halfWidth, shadow }: StarPointProps & { shadow?: boolean }) {
-  return (
-    <path
-      d={starPath(length, halfWidth)}
-      fill={shadow ? 'rgb(0 0 0 / 0.45)' : 'rgb(var(--color-text))'}
-      stroke={shadow ? 'none' : 'rgb(var(--color-bg) / 0.45)'}
-      strokeWidth="0.4"
-      transform={`rotate(${angle})`}
-    />
-  );
-}
+const RING_SIZE = 28;
+const DOT_SIZE = 6;
 
 export function Cursor() {
   const isFinePointer = useIsFinePointer();
@@ -43,32 +28,21 @@ export function Cursor() {
   const [pressed, setPressed] = useState(false);
   const pressTimeout = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
 
-  const scale = useSpring(1, INSTRUMENT_SPRING);
-  const rotate = useSpring(0, INSTRUMENT_SPRING);
-  // Rests at a permanent tilt (like a coin sitting at an angle) so the cursor always reads as
-  // a dimensional object, not just a flat icon that briefly tilts on hover. State changes shift
-  // the tilt further — never tied to movement velocity, so it stays rigid while traveling.
-  const rotateX = useSpring(22, INSTRUMENT_SPRING);
-  const rotateY = useSpring(-16, INSTRUMENT_SPRING);
+  // The point sits exactly on the raw pointer position — always precise.
+  // The ring follows a softer spring, so it drifts a beat behind on fast
+  // moves and settles back around the point when it stops.
+  const trailConfig = prefersReducedMotion ? SNAP_SPRING : TRAIL_SPRING;
+  const ringX = useSpring(x, trailConfig);
+  const ringY = useSpring(y, trailConfig);
+
+  const ringScale = useSpring(1, SCALE_SPRING);
+  const dotScale = useSpring(1, SCALE_SPRING);
 
   useEffect(() => {
     if (prefersReducedMotion) return;
-    scale.set(pressed ? 0.95 : variant === 'link' ? 1.12 : variant === 'button' ? 1.08 : 1);
-    rotate.set(!pressed && variant === 'link' ? 4 : 0);
-    if (pressed) {
-      rotateX.set(34);
-      rotateY.set(-16);
-    } else if (variant === 'link') {
-      rotateX.set(6);
-      rotateY.set(14);
-    } else if (variant === 'button') {
-      rotateX.set(-13);
-      rotateY.set(-6);
-    } else {
-      rotateX.set(22);
-      rotateY.set(-16);
-    }
-  }, [variant, pressed, scale, rotate, rotateX, rotateY, prefersReducedMotion]);
+    ringScale.set(pressed ? 0.65 : variant === 'link' ? 1.55 : variant === 'button' ? 1.4 : 1);
+    dotScale.set(pressed ? 1.7 : variant === 'default' ? 1 : 0.6);
+  }, [variant, pressed, ringScale, dotScale, prefersReducedMotion]);
 
   useEffect(() => {
     if (!isFinePointer) return;
@@ -107,70 +81,40 @@ export function Cursor() {
 
   if (!isFinePointer) return null;
 
-  const isButtonHover = variant === 'button' && !pressed;
-  const isAnyHover = variant !== 'default' && !pressed;
-
   return (
-    <motion.div
-      className="pointer-events-none fixed left-0 top-0 z-[9999]"
-      style={{ x, y, translateX: '-50%', translateY: '-50%' }}
-    >
-      {/* Tiny halo — any clickable hover (link or button), kept subtle (no neon). */}
-      <div
-        className="absolute left-1/2 top-1/2 h-8 w-8 -translate-x-1/2 -translate-y-1/2 rounded-full transition-opacity duration-200 ease-out"
-        style={{
-          background: 'radial-gradient(circle, rgb(var(--color-bg) / 0.65) 0%, transparent 72%)',
-          opacity: isAnyHover ? 1 : 0,
-        }}
-      />
-      <motion.svg
-        width="22"
-        height="22"
-        viewBox="0 0 24 24"
-        style={{
-          scale,
-          rotate,
-          rotateX,
-          rotateY,
-          transformPerspective: 220,
-          filter: isButtonHover
-            ? 'drop-shadow(1.5px 3px 2.2px rgba(0, 0, 0, 0.55)) brightness(1.1)'
-            : 'drop-shadow(1.5px 2.6px 2px rgba(0, 0, 0, 0.48))',
-        }}
-        className="block transition-[filter] duration-150 ease-out"
+    <>
+      {/* Ring — trails a beat behind the point, grows on hover, contracts on press. */}
+      <motion.div
+        className="pointer-events-none fixed left-0 top-0 z-[9999]"
+        style={{ x: ringX, y: ringY, translateX: '-50%', translateY: '-50%' }}
       >
-        <defs>
-          {/* Fixed upper-left light source so the bevel reads as real lighting rather than a
-              flat cutout — this is what actually sells "3D" at a glance, more than the tilt does. */}
-          <linearGradient id="starBevel" x1="4" y1="3" x2="20" y2="21" gradientUnits="userSpaceOnUse">
-            <stop offset="0%" stopColor="white" stopOpacity="0.55" />
-            <stop offset="42%" stopColor="white" stopOpacity="0" />
-            <stop offset="58%" stopColor="black" stopOpacity="0" />
-            <stop offset="100%" stopColor="black" stopOpacity="0.55" />
-          </linearGradient>
-        </defs>
+        <motion.div
+          className="rounded-full border"
+          style={{
+            width: RING_SIZE,
+            height: RING_SIZE,
+            borderColor: 'rgb(var(--color-text) / 0.5)',
+            borderWidth: variant === 'button' ? 1.5 : 1.25,
+            scale: ringScale,
+          }}
+        />
+      </motion.div>
 
-        <g transform="translate(12 12)">
-          {/* Extruded depth face — a darker offset echo of the star peeking out from behind
-              the main shape, so the tilt reads as a solid 3D object instead of a flat cutout. */}
-          <g transform="translate(2 2.6)">
-            {STAR_ANGLES.map((angle) => (
-              <StarPoint key={`shadow-${angle}`} angle={angle} length={11.5} halfWidth={2.1} shadow />
-            ))}
-          </g>
-          {STAR_ANGLES.map((angle) => (
-            <StarPoint key={angle} angle={angle} length={11.5} halfWidth={2.1} />
-          ))}
-          {/* Bevel overlay: same silhouette, lit from the upper-left, shaded at the lower-right. */}
-          <g style={{ mixBlendMode: 'overlay' }}>
-            {STAR_ANGLES.map((angle) => (
-              <path key={`bevel-${angle}`} d={starPath(11.5, 2.1)} fill="url(#starBevel)" transform={`rotate(${angle})`} />
-            ))}
-          </g>
-          {/* Tiny accent — the only spot of color, kept under 5% of the silhouette. */}
-          <circle cx="0" cy="0" r="1.4" fill="rgb(var(--color-accent))" stroke="rgb(var(--color-bg) / 0.45)" strokeWidth="0.4" />
-        </g>
-      </motion.svg>
-    </motion.div>
+      {/* Point — locked exactly to the pointer, the one spot of color. */}
+      <motion.div
+        className="pointer-events-none fixed left-0 top-0 z-[9999]"
+        style={{ x, y, translateX: '-50%', translateY: '-50%' }}
+      >
+        <motion.div
+          className="rounded-full"
+          style={{
+            width: DOT_SIZE,
+            height: DOT_SIZE,
+            background: 'rgb(var(--color-accent))',
+            scale: dotScale,
+          }}
+        />
+      </motion.div>
+    </>
   );
 }
