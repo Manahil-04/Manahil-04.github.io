@@ -11,6 +11,16 @@ export interface Project {
 
 export const projects: Project[] = [
   {
+    slug: 'trace-enterprise-rag',
+    title: 'TRACE — Self-Hosted Enterprise RAG',
+    description:
+      'Built a privacy-first, self-hosted retrieval-augmented generation system that answers questions strictly from uploaded documents, with inline source citations down to the file and page, semantic search, and workspace-level access control.',
+    category: 'AI / RAG System',
+    tech: ['FastAPI', 'PostgreSQL', 'pgvector', 'SQLAlchemy', 'React', 'TypeScript', 'Ollama', 'Docker'],
+    image: '/images/projects/trace-architecture.png',
+    link: 'https://github.com/Manahil-04/TRACE-Enterprise-RAG',
+  },
+  {
     slug: 'yana-meals',
     title: 'Medical Food Delivery Service App (YANA Meals)',
     description:
